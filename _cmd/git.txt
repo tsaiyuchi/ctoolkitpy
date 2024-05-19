@@ -1,0 +1,16 @@
+
+
+
+cd d:
+cd ycProject
+cd github
+
+cd ctoolkitpy
+git add --all
+git commit -m 'refactor'
+git pull
+git push
+cd ..
+
+
+
