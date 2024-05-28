@@ -8,6 +8,6 @@ class CtkLogLevel(Enum):
     Verbose = 1
     Debug = 2
     Info = 3
-    Warning = 4
+    Warn = 4
     Error = 5
     Fatal = 6
