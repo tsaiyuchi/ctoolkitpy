@@ -6,7 +6,6 @@ from threading import Thread, Lock, Event
 import traceback
 
 #--- 3rd packages ---
-from events import Events
 
 #--- projec packages ---
 from .ctkloglevel import *
@@ -47,12 +46,13 @@ class CtkLogger:
         try:
             me.lock.acquire()
             me.logs.append(entity)
-            if(me.thread == None or not me.thread.is_alive()):
-                me.thread = Thread(target=me.run_loop)
-                me.thread.start()
-
         finally:
             me.lock.release()
+
+        if(me.thread == None or not me.thread.is_alive()):
+            me.thread = Thread(target=me.run_loop)
+            me.thread.start()
+
 
     #regular write use a entity creation
     def write_log(self, message:str=None, exception:Exception=None, traceback_msg:str=None, level:CtkLogLevel=None, log_object:object=None):
