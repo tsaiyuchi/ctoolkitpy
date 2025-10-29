@@ -22,21 +22,21 @@ class CtkLog:
         key = ''
         pkg_to_dist = metadata.packages_distributions()
 
-
         if target is None:
             key = ''
         if isinstance(target, str):
             key = target
         elif isinstance(target, type):
-            key = pkg_to_dist.get(target.__module__.split('.')[0])[0]
+            dist = pkg_to_dist.get(target.__module__.split('.')[0])
+            key = '' if dist is None else dist[0]
         elif isinstance(target, types.ModuleType): #新增模組情況
-            key = pkg_to_dist.get(target.__name__.split('.')[0])[0]
+            dist = pkg_to_dist.get(target.__name__.split('.')[0])
+            key = '' if dist is None else dist[0]
         elif hasattr(target, "__class__"):
             #package也有 __class__ 所以要放在 types.ModuleType 之後
-            key = pkg_to_dist.get(target.__class__.__module__.split('.')[0])[0]
+            dist = pkg_to_dist.get(target.__class__.__module__.split('.')[0])
+            key = '' if dist is None else dist[0]
         else: raise Exception('Error target')
-
-        print(f'CtkLog Target = {key}')
 
         if key in me.map: return me.map[key]
         logger = CtkLogger()
