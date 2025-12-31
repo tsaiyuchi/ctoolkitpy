@@ -1,24 +1,41 @@
 #--- basic package --- --- ---
 from typing import List, Dict, Callable
 
+#--- advanced package --- --- ---
+from importlib import metadata
+import types
+
+
 #--- project packages --- --- ---
 from .ctklogger import *
 
 class CtkLog:
     map:dict[str, CtkLogger] = {}
 
+
+
+
+
     @classmethod
     def get_create(cls, target):
         me = cls
         key = ''
+        pkg_to_dist = metadata.packages_distributions()
+
         if target is None:
             key = ''
         if isinstance(target, str):
             key = target
         elif isinstance(target, type):
-            key = f'{target.__module__}'
+            dist = pkg_to_dist.get(target.__module__.split('.')[0])
+            key = '' if dist is None else dist[0]
+        elif isinstance(target, types.ModuleType): #新增模組情況
+            dist = pkg_to_dist.get(target.__name__.split('.')[0])
+            key = '' if dist is None else dist[0]
         elif hasattr(target, "__class__"):
-            key = target.__class__.__module__
+            #package也有 __class__ 所以要放在 types.ModuleType 之後
+            dist = pkg_to_dist.get(target.__class__.__module__.split('.')[0])
+            key = '' if dist is None else dist[0]
         else: raise Exception('Error target')
 
         if key in me.map: return me.map[key]
