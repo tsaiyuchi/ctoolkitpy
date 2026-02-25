@@ -16,9 +16,9 @@ class CtkFtpCfg:
         me.passwd = passwd
 
     def to_json(self, indent:int=4)->str: return CtkUtil.to_json(self)
-    def save_json(self, filepath:str): CtkUtil.save_json(self, filepath)
     @classmethod 
     def from_json(cls, json_str: str): return CtkUtil.from_json_cls(json_str, cls)
+    def save_json(self, filepath:str): CtkUtil.save_json(filepath, self)
     @classmethod
     def load_json(cls, filepath:str): return CtkUtil.load_json_cls(filepath, cls) 
 
