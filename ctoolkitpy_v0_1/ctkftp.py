@@ -15,6 +15,13 @@ class CtkFtpCfg:
         me.user = user
         me.passwd = passwd
 
+
+    def to_dict(self): self.__dict__.copy()
+    @classmethod
+    def from_dict(cls, data): 
+        obj = cls()
+        obj.__dict__.update(data)
+        return obj
     def to_json(self, indent:int=4)->str: return CtkUtil.to_json(self)
     @classmethod 
     def from_json(cls, json_str: str): return CtkUtil.from_json_cls(json_str, cls)
