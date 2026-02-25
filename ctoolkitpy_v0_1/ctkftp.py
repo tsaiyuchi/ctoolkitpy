@@ -1,14 +1,11 @@
 #--- basci packages
 import os
-
 #--- advanced packages ---
 import ftplib
 import json
-
 #--- 3rd packages ---
-
 #--- project packages ---
-
+from .ctkutil import *
 
 class CtkFtpCfg:
     def __init__(self, host:str=None, port:int=21, user:str=None, passwd:str=None):
@@ -18,26 +15,14 @@ class CtkFtpCfg:
         me.user = user
         me.passwd = passwd
 
-    def to_json(self, indent: int = 4) -> str:
-        me = self
-        return json.dumps(self.__dict__, indent=indent)
-
+    def to_json(self, indent:int=4)->str: return CtkUtil.to_json(self)
+    def save_json(self, filepath:str): CtkUtil.save_json(self, filepath)
+    @classmethod 
+    def from_json(cls, json_str: str): return CtkUtil.from_json_cls(json_str, cls)
     @classmethod
-    def from_json(cls, data: str):
-        cfg_dict = json.loads(data)
-        return cls(**cfg_dict)
+    def load_json(cls, filepath:str): return CtkUtil.load_json_cls(filepath, cls) 
 
-    def save_to_file(self, file_path: str):
-        me = self
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(me.to_json())
-    @classmethod
-    def load_from_file(cls, file_path: str):
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"找不到設定檔: {file_path}")
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = f.read()
-        return cls.from_json(data)
+
 
 
 
